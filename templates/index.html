@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <style>
+
+        body{
+            background-color:rgb(255, 255, 101);
+        }
+        #heroAtas{
+            margin: 3em;
+            border: 1px solid rgba(0, 0, 0, 0.407);
+            border-radius: 5px;
+            background-color: aliceblue;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        #heroBawah{
+            margin: 3em;
+            border: 1px solid rgba(0, 0, 0, 0.407);
+            border-radius: 5px;
+            background-color: aliceblue;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        #navTitle{
+            color: white;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar bg-black">
+            <div class="container-fluid">
+              <span class="navbar-brand mb-0 h1" id="navTitle">Sistem Rekomendasi Anime</span>
+            </div>
+          </nav>
+    </header>
+    <div class="container text-center">
+
+
+        <div id="heroAtas">
+            <div class="container col-xl-10 col-xxl-8 px-4 py-5" id="main">
+                <div class="row align-items-center g-lg-5 py-5">
+                  <div class="col-lg-7 text-center text-lg-start">
+                    <h1 class="display-4 fw-bold lh-1 mb-3">Sistem Rekomendasi Anime</h1>
+                    <p class="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+                  </div>
+                  <div class="col-md-10 mx-auto col-lg-5">
+                    <form id="searchForm">
+                        <div class="input-group mb-3">
+                            <input id="textSearch" type="text" class="form-control" placeholder="Masukkan judul anime" aria-label="Masukkan judul anime" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Send</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+            <div id="heroBawah">
+                <div class="row align-items-center g-lg-5 py-5">
+                    <h2>Rekomendasi</h2>
+                    <ul class="list-group list-group-flush" id="recList">
+    
+                    </ul>
+                </div>
+            </div>
+    </div>
+</body>
+
+<script>
+
+    document.querySelector('#searchForm').addEventListener("submit", (event) =>{
+        event.preventDefault();
+
+                
+        let data =  document.getElementById("textSearch").value;
+    
+            
+    const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Auth-Token": "12345"
+            },
+            body: JSON.stringify(data)
+        }
+
+
+        const sendResult = fetch(`http://127.0.0.1:5000/predict`, options)
+            .then((response) => response.json())
+            .then((data) =>{
+                console.log(typeof(data)+"   " + data.value)
+
+                let ans = data.value
+
+                const ul = document.getElementById("recList")
+
+                ans.forEach(element => {
+
+                    const li = document.createElement('li');
+
+                    li.setAttribute("class","list-group-item")
+
+                    li.innerHTML = element;
+                    
+                    ul.appendChild(li)
+                });
+                
+        })
+    }); 
+
+</script>
+
+</html>
